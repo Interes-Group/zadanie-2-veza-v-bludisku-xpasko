@@ -7,6 +7,26 @@ import java.awt.event.ActionListener;
 
 public class CreateButtons extends JPanel{
 
+    public JButton getB1() {
+        return b1;
+    }
+
+    public JButton getB2() {
+        return b2;
+    }
+
+    public JButton getB3() {
+        return b3;
+    }
+
+    public JButton getB4() {
+        return b4;
+    }
+
+    public JButton getB5() {
+        return b5;
+    }
+
     JButton b1 = new JButton("RESET");
     JButton b2 = new JButton("↑");
     JButton b3 = new JButton("↓");
@@ -18,11 +38,13 @@ public class CreateButtons extends JPanel{
     GridBagConstraints c = new GridBagConstraints();
     GridBagLayout panelLayout = new GridBagLayout();
 
-    public CreateButtons(){
-        //f1.setPreferredSize(new Dimension(1000,1000));
+    public JPanel create(){
 
-       // p1.add(new Label("nieco"));
-        //f1.add(new MyCanvas());
+        b1.setFocusable(false);
+        b2.setFocusable(false);
+        b3.setFocusable(false);
+        b4.setFocusable(false);
+        b5.setFocusable(false);
 
         p1.setLayout(panelLayout);
 
@@ -72,6 +94,7 @@ public class CreateButtons extends JPanel{
         c.gridy = 1;
         p1.add(b5,c);
 
+        return p1;
     }
 
 //    @Override
