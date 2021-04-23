@@ -12,6 +12,7 @@ public class CreateMaze extends JPanel {
     JPanel p1 = new JPanel();
     JPanel p2 = new JPanel();
     JFrame f1 = new JFrame();
+    private int count = 1;
 
     public CreateMaze(DepthFirstSearch maze,Player player,CreateButtons buttons){
         this.Maze = maze;
@@ -22,6 +23,7 @@ public class CreateMaze extends JPanel {
 
     public void MazeMapMaker(){
          var maze = Maze.getMaze();
+
          f1.setTitle("policko");
          f1.setSize(630,780);
          f1.setLocationRelativeTo(null);
@@ -51,15 +53,22 @@ public class CreateMaze extends JPanel {
                  switch (keyCode){
                      case KeyEvent.VK_UP:
                          UpCondition(maze);
+                         //highlighttiles();
                          break;
                      case KeyEvent.VK_DOWN:
+                         //fixallreachable();
                          DownCondition(maze);
+                         //highlighttiles();
                          break;
                      case KeyEvent.VK_LEFT:
+                         //fixallreachable();
                          LeftCondition(maze);
+                         //highlighttiles();
                          break;
                      case KeyEvent.VK_RIGHT:
+                         //fixallreachable();
                          RightCondition(maze);
+                         //highlighttiles();
                          break;
 
                  }
@@ -81,9 +90,10 @@ public class CreateMaze extends JPanel {
                Color color;
                if (maze[i][j].isIswall()) color = Color.BLACK;
                else color = Color.WHITE;
-               if(maze[i][j].isFinish) color = Color.GREEN;
                if(maze[i][j].isReachable) color = Color.PINK;
                if(maze[i][j].isReachablegreen) color = Color.GREEN;
+               if(maze[i][j].isFinish) color = Color.GREEN;
+               if(maze[i][j].isFinish && maze[i][j].isReachablegreen) color = Color.CYAN;
                if(maze[i][j].getX() == player.getPosx() && maze[i][j].getY() == player.getPosy()) color = Color.RED;
 
                g.setColor(color);
@@ -96,6 +106,9 @@ public class CreateMaze extends JPanel {
 
     public void reset(){
         Maze.generatemaze();
+        var counter = buttons.getCounter();
+        counter.setText("Pocet uspesnych: " + String.valueOf(count));
+        count++;
         repaint();
     }
 
@@ -114,10 +127,6 @@ public class CreateMaze extends JPanel {
 
 }
 
-    public void MouseMotionListener(MouseEvent e){
-
-
-    }
 
     public void mouse(){
         highlighttiles();
@@ -128,19 +137,21 @@ public class CreateMaze extends JPanel {
                 var mouseX = e.getX();
                 var mouseY = e.getY();
                 int i = 1;
-                if(((mouseX-10)/20) >= player.getPosx() && ((mouseY-50/20)) >= (player.getPosy())){
-                    System.out.println(mouseX);
-                    System.out.println(mouseY);
-                    repaint();
+                if(e.getX() <= 620 && e.getY() <= 660) {
+                    if (((mouseX - 10) / 20) >= player.getPosx() && ((mouseY - 50 / 20)) >= (player.getPosy())) {
+                        System.out.println(mouseX);
+                        System.out.println(mouseY);
+                        repaint();
+                    }
+                    if (maze[((mouseY - 50) / 20)][(mouseX - 10) / 20].isReachable) {
+                        player.setPosx((mouseX - 10) / 20);
+                        player.setPosy((mouseY - 50) / 20);
+                        repaint();
+                        fixallreachable();
+                        highlighttiles();
+                        ResetCondition();
+                    }
                 }
-                if(maze[((mouseY-50)/20)][(mouseX-10)/20].isReachable){
-                    player.setPosx((mouseX-10)/20);
-                    player.setPosy((mouseY-50)/20);
-                    repaint();
-                    fixallreachable();
-                    highlighttiles();
-                }
-
             }
 
 
@@ -176,22 +187,25 @@ public class CreateMaze extends JPanel {
 
             @Override
             public void mouseMoved(MouseEvent e) {
+
                var mouseX = e.getX();
                var mouseY = e.getY();
-               if(maze[(mouseY-50)/20][(mouseX-10)/20].isReachable){
-                    maze[(mouseY-50)/20][(mouseX-10)/20].setReachablegreen(true);
 
-                    if (maze[((mouseY-50)/20)][(mouseX-10)/20] != maze[prevposy][prevposx]){
-                       maze[prevposy][prevposx].setReachablegreen(false);
-                   }
-                    prevposx = ((mouseX-10)/20);
-                    prevposy = ((mouseY-50)/20);
-                    repaint();
-                    //fixallreachable(true);
+               if(e.getX() <= 620 && e.getY() <= 660){
+                   if(maze[(mouseY-50)/20][(mouseX-10)/20].isReachable){
+                       maze[(mouseY-50)/20][(mouseX-10)/20].setReachablegreen(true);
+
+                       if (maze[((mouseY-50)/20)][(mouseX-10)/20] != maze[prevposy][prevposx]){
+                           maze[prevposy][prevposx].setReachablegreen(false);
+                       }
+                       prevposx = ((mouseX-10)/20);
+                       prevposy = ((mouseY-50)/20);
+                       repaint();
+               }
+
             }
             }
         });
-        //fixallreachable(false);
     }
 
 
@@ -251,18 +265,20 @@ public class CreateMaze extends JPanel {
 
     private void RightCondition(Cell[][] maze) {
         if(!maze[player.getPosy()][player.getPosx()+1].iswall){
+            fixallreachable();
             player.setPosx(player.getPosx()+1);
-            System.out.println("right");
-            if(player.getPosy() == 29 && player.getPosx() == 29) reset();
+            highlighttiles();
+            ResetCondition();
             repaint();
         }
     }
 
     private void LeftCondition(Cell[][] maze) {
         if(!maze[player.getPosy()][player.getPosx()-1].iswall){
+            fixallreachable();
             player.setPosx(player.getPosx()-1);
-            System.out.println("left");
-            if(player.getPosy() == 29 && player.getPosx() == 29) reset();
+            highlighttiles();
+            ResetCondition();
             repaint();
         }
     }
@@ -270,20 +286,26 @@ public class CreateMaze extends JPanel {
 
     private void DownCondition(Cell[][] maze) {
         if(!maze[player.getPosy()+1][player.getPosx()].iswall){
+            fixallreachable();
             player.setPosy(player.getPosy()+1);
-            System.out.println("down");
-            if(player.getPosy() == 29 && player.getPosx() == 29) reset();
+            highlighttiles();
+            ResetCondition();
             repaint();
         }
     }
 
     private void UpCondition(Cell[][] maze) {
         if(!maze[player.getPosy()-1][player.getPosx()].iswall){
+            fixallreachable();
             player.setPosy(player.getPosy()-1);
-            System.out.println("up");
-            if(player.getPosy() == 29 && player.getPosx() == 29) reset();
+            highlighttiles();
+            ResetCondition();
             repaint();
         }
+    }
+
+    public void ResetCondition(){
+        if(player.getPosy() == 29 && player.getPosx() == 29) reset();
     }
 
 }

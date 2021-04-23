@@ -27,11 +27,23 @@ public class CreateButtons extends JPanel{
         return b5;
     }
 
+
+
     JButton b1 = new JButton("RESET");
     JButton b2 = new JButton("↑");
     JButton b3 = new JButton("↓");
     JButton b4 = new JButton("→");
     JButton b5 = new JButton("←");
+    JLabel counter = new JLabel("Pocet uspesnych: 0");
+
+    public void setCounter(JLabel counter) {
+        this.counter = counter;
+    }
+
+    public JLabel getCounter() {
+        return counter;
+    }
+
     Graphics g;
 
     JPanel p1 = new JPanel();
@@ -67,8 +79,7 @@ public class CreateButtons extends JPanel{
         c.weightx = 0.5;
         c.gridx = 3;
         c.gridy = 0;
-        var label = new JLabel("something");
-        p1.add(label);
+        p1.add(counter);
 
 
         c.fill = GridBagConstraints.HORIZONTAL;
