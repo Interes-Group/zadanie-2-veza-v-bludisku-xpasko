@@ -33,6 +33,11 @@ public class CreateButtons extends JPanel{
     JButton b4 = new JButton("→");
     JButton b5 = new JButton("←");
     JLabel counter = new JLabel("Pocet uspesnych: 0");
+    JPanel p2 = new JPanel();
+
+    public JPanel getP2() {
+        return p2;
+    }
 
     public JLabel getCounter() {
         return counter;

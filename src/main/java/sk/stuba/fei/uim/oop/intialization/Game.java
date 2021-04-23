@@ -1,5 +1,6 @@
-package sk.stuba.fei.uim.oop;
+package sk.stuba.fei.uim.oop.intialization;
 
+import sk.stuba.fei.uim.oop.CreateMaze;
 import sk.stuba.fei.uim.oop.intialization.CreateButtons;
 import sk.stuba.fei.uim.oop.intialization.DepthFirstSearch;
 import sk.stuba.fei.uim.oop.intialization.Player;
