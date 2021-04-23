@@ -1,4 +1,4 @@
-package sk.stuba.fei.uim.oop;
+package sk.stuba.fei.uim.oop.intialization;
 
 public class Player {
 
@@ -20,7 +20,5 @@ public class Player {
     public int getPosx() {
         return posx;
     }
-
-
 
 }

@@ -1,9 +1,7 @@
-package sk.stuba.fei.uim.oop;
+package sk.stuba.fei.uim.oop.intialization;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class CreateButtons extends JPanel{
 
@@ -36,15 +34,9 @@ public class CreateButtons extends JPanel{
     JButton b5 = new JButton("←");
     JLabel counter = new JLabel("Pocet uspesnych: 0");
 
-    public void setCounter(JLabel counter) {
-        this.counter = counter;
-    }
-
     public JLabel getCounter() {
         return counter;
     }
-
-    Graphics g;
 
     JPanel p1 = new JPanel();
     GridBagConstraints c = new GridBagConstraints();
@@ -107,12 +99,4 @@ public class CreateButtons extends JPanel{
 
         return p1;
     }
-
-//    @Override
-//    public void actionPerformed(ActionEvent e) {
-//
-//        if (e.getSource() == b1){
-//            f1.setTitle("Something Actually happened");
-//        }
-//    }
 }

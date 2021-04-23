@@ -1,11 +1,10 @@
 package sk.stuba.fei.uim.oop;
 
-import javax.swing.*;
-import java.awt.*;
+import sk.stuba.fei.uim.oop.intialization.CreateButtons;
+import sk.stuba.fei.uim.oop.intialization.DepthFirstSearch;
+import sk.stuba.fei.uim.oop.intialization.Player;
 
 public class Game{
-
-    Player player = new Player();
 
     public void play(){
 
@@ -14,10 +13,7 @@ public class Game{
        DepthFirstSearch MazeMap = new DepthFirstSearch(player);
        MazeMap.generatemaze();
        CreateMaze CreateMaze = new CreateMaze(MazeMap,player,button);
-       CreateMaze.MazeMapMaker();
-
-
+       CreateMaze.mazeMapMaker();
     }
-
 }
 

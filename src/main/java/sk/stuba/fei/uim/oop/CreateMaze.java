@@ -1,15 +1,18 @@
 package sk.stuba.fei.uim.oop;
 
+import sk.stuba.fei.uim.oop.intialization.CreateButtons;
+import sk.stuba.fei.uim.oop.intialization.DepthFirstSearch;
+import sk.stuba.fei.uim.oop.intialization.Player;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 public class CreateMaze extends JPanel {
 
-    private DepthFirstSearch Maze;
-    private Player player;
-    private CreateButtons buttons;
-    JPanel p1 = new JPanel();
+    private final DepthFirstSearch Maze;
+    private final Player player;
+    private final CreateButtons buttons;
     JPanel p2 = new JPanel();
     JFrame f1 = new JFrame();
     private int count = 1;
@@ -21,16 +24,13 @@ public class CreateMaze extends JPanel {
     }
 
 
-    public void MazeMapMaker(){
+    public void mazeMapMaker(){
          var maze = Maze.getMaze();
 
-         f1.setTitle("policko");
+         f1.setTitle("Rook in a Maze GAME");
          f1.setSize(630,780);
          f1.setLocationRelativeTo(null);
          f1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
-         p1.setLayout(new GridBagLayout());
 
          p2 = buttons.create();
          f1.add(p2,BorderLayout.SOUTH);
@@ -38,6 +38,7 @@ public class CreateMaze extends JPanel {
          f1.setVisible(true);
          mouse();
          buttons();
+
 
 
          f1.addKeyListener(new KeyListener() {
@@ -52,23 +53,16 @@ public class CreateMaze extends JPanel {
                  int keyCode = e.getKeyCode();
                  switch (keyCode){
                      case KeyEvent.VK_UP:
-                         UpCondition(maze);
-                         //highlighttiles();
+                         moveCondition(maze,'u');
                          break;
                      case KeyEvent.VK_DOWN:
-                         //fixallreachable();
-                         DownCondition(maze);
-                         //highlighttiles();
+                         moveCondition(maze,'d');
                          break;
                      case KeyEvent.VK_LEFT:
-                         //fixallreachable();
-                         LeftCondition(maze);
-                         //highlighttiles();
+                         moveCondition(maze,'l');
                          break;
                      case KeyEvent.VK_RIGHT:
-                         //fixallreachable();
-                         RightCondition(maze);
-                         //highlighttiles();
+                         moveCondition(maze,'r');
                          break;
 
                  }
@@ -78,6 +72,7 @@ public class CreateMaze extends JPanel {
          });
 
     }
+
 
     public void paint(Graphics g){
          super.paint(g);
@@ -104,14 +99,6 @@ public class CreateMaze extends JPanel {
          }
     }
 
-    public void reset(){
-        Maze.generatemaze();
-        var counter = buttons.getCounter();
-        counter.setText("Pocet uspesnych: " + String.valueOf(count));
-        count++;
-        repaint();
-    }
-
     public void buttons(){
         var maze = Maze.getMaze();
         var b1 = buttons.getB1();
@@ -120,23 +107,21 @@ public class CreateMaze extends JPanel {
         var b4 = buttons.getB4();
         var b5 = buttons.getB5();
         b1.addActionListener(e -> reset());
-        b2.addActionListener(e -> UpCondition(maze));
-        b3.addActionListener(e -> DownCondition(maze));
-        b4.addActionListener(e -> RightCondition(maze));
-        b5.addActionListener(e -> LeftCondition(maze));
-
-}
-
+        b2.addActionListener(e -> moveCondition(maze,'u')); //UP
+        b3.addActionListener(e -> moveCondition(maze,'d'));//Down
+        b4.addActionListener(e -> moveCondition(maze,'r'));//Right
+        b5.addActionListener(e -> moveCondition(maze,'l'));//Left
+    }
 
     public void mouse(){
-        highlighttiles();
         var maze = Maze.getMaze();
+        highlighttiles();
+
         f1.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 var mouseX = e.getX();
                 var mouseY = e.getY();
-                int i = 1;
                 if(e.getX() <= 620 && e.getY() <= 660) {
                     if (((mouseX - 10) / 20) >= player.getPosx() && ((mouseY - 50 / 20)) >= (player.getPosy())) {
                         System.out.println(mouseX);
@@ -149,7 +134,7 @@ public class CreateMaze extends JPanel {
                         repaint();
                         fixallreachable();
                         highlighttiles();
-                        ResetCondition();
+                        if(player.getPosy() == 29 && player.getPosx() == 29) reset();
                     }
                 }
             }
@@ -201,54 +186,44 @@ public class CreateMaze extends JPanel {
                        prevposx = ((mouseX-10)/20);
                        prevposy = ((mouseY-50)/20);
                        repaint();
-               }
+                    }
 
+               }
             }
-            }
+
         });
     }
-
-
 
     private void highlighttiles(){
         var maze = Maze.getMaze();
         int i = 1;
-        while(true){
-            if(maze[player.getPosy()][player.getPosx()+i].iswall)
-                break;
-
-            else{
-                maze[player.getPosy()][player.getPosx()+i].setReachable(true);
-                i++;
+        boolean testR = true;
+        boolean testL = true;
+        boolean testU = true;
+        boolean testD = true;
+        do {
+            if (testR) {
+                if (!maze[player.getPosy()][player.getPosx() + i].iswall)
+                    maze[player.getPosy()][player.getPosx() + i].setReachable(true);
+                else testR = false;
             }
-        }
-        i = 1;
-        while(true){
-            if(maze[player.getPosy()+i][player.getPosx()].iswall)
-                break;
-            else{
-                maze[player.getPosy()+i][player.getPosx()].setReachable(true);
-                i++;
+            if (testL) {
+                if (!maze[player.getPosy() + i][player.getPosx()].iswall)
+                    maze[player.getPosy() + i][player.getPosx()].setReachable(true);
+                else testL = false;
             }
-        }
-        i = 1;
-        while(true){
-            if(maze[player.getPosy()][player.getPosx()-i].iswall)
-                break;
-            else{
-                maze[player.getPosy()][player.getPosx()-i].setReachable(true);
-                i++;
+            if (testU) {
+                if (!maze[player.getPosy()][player.getPosx() - i].iswall)
+                    maze[player.getPosy()][player.getPosx() - i].setReachable(true);
+                else testU = false;
             }
-        }
-        i = 1;
-        while(true){
-            if(maze[player.getPosy()-i][player.getPosx()].iswall)
-                break;
-            else{
-                maze[player.getPosy()-i][player.getPosx()].setReachable(true);
-                i++;
+            if (testD) {
+                if (!maze[player.getPosy() - i][player.getPosx()].iswall)
+                    maze[player.getPosy() - i][player.getPosx()].setReachable(true);
+                else testD = false;
             }
-        }
+            i++;
+        } while (testR || testL || testU || testD);
     }
 
 
@@ -263,51 +238,46 @@ public class CreateMaze extends JPanel {
         }
     }
 
-    private void RightCondition(Cell[][] maze) {
-        if(!maze[player.getPosy()][player.getPosx()+1].iswall){
-            fixallreachable();
-            player.setPosx(player.getPosx()+1);
-            highlighttiles();
-            ResetCondition();
-            repaint();
+    private void moveCondition(Cell[][] maze, char c) {
+        if(c == 'r') {
+            if (!maze[player.getPosy()][player.getPosx() + 1].iswall) {
+                fixallreachable();
+                player.setPosx(player.getPosx() + 1);
+            }
         }
-    }
-
-    private void LeftCondition(Cell[][] maze) {
-        if(!maze[player.getPosy()][player.getPosx()-1].iswall){
-            fixallreachable();
-            player.setPosx(player.getPosx()-1);
-            highlighttiles();
-            ResetCondition();
-            repaint();
+        if(c == 'l') {
+            if (!maze[player.getPosy()][player.getPosx() - 1].iswall) {
+                fixallreachable();
+                player.setPosx(player.getPosx() - 1);
+            }
         }
-    }
-
-
-    private void DownCondition(Cell[][] maze) {
-        if(!maze[player.getPosy()+1][player.getPosx()].iswall){
-            fixallreachable();
-            player.setPosy(player.getPosy()+1);
-            highlighttiles();
-            ResetCondition();
-            repaint();
+        if(c == 'd') {
+            if (!maze[player.getPosy() + 1][player.getPosx()].iswall) {
+                fixallreachable();
+                player.setPosy(player.getPosy() + 1);
+            }
         }
-    }
-
-    private void UpCondition(Cell[][] maze) {
-        if(!maze[player.getPosy()-1][player.getPosx()].iswall){
-            fixallreachable();
-            player.setPosy(player.getPosy()-1);
-            highlighttiles();
-            ResetCondition();
-            repaint();
+        if(c == 'u'){
+            if(!maze[player.getPosy()-1][player.getPosx()].iswall){
+                fixallreachable();
+                player.setPosy(player.getPosy()-1);
+            }
         }
-    }
-
-    public void ResetCondition(){
+        highlighttiles();
         if(player.getPosy() == 29 && player.getPosx() == 29) reset();
+        repaint();
+    }
+
+    public void reset(){
+        Maze.generatemaze();
+        var counter = buttons.getCounter();
+        counter.setText("Pocet uspesnych: " + count);
+        count++;
+        highlighttiles();
+        repaint();
     }
 
 }
+
 
 

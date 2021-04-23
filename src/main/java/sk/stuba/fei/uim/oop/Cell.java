@@ -2,12 +2,12 @@ package sk.stuba.fei.uim.oop;
 
 public class Cell {
 
-    private int x;
-    private int y;
-    boolean iswall;
-    boolean isBeggining;
-    boolean isFinish;
-    boolean isReachable;
+    public int x;
+    public int y;
+    public boolean iswall;
+    public boolean isBeggining;
+    public boolean isFinish;
+    public boolean isReachable;
 
     public boolean isReachablegreen() {
         return isReachablegreen;
