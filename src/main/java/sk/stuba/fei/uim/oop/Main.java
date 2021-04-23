@@ -4,7 +4,6 @@ import sk.stuba.fei.uim.oop.intialization.Game;
 
 public class Main {
     public static void main(String[] args) {
-        Game g = new Game();
-        g.play();
+        new Game();
     }
 }

@@ -19,7 +19,7 @@ public class DepthFirstSearch {
     }
 
 
-    public void generatemaze() {
+    public void generateMaze() {
 
         for (int i = 0; i < 31; i++) {
             for (int j = 0; j < 31; j++) {
@@ -39,9 +39,9 @@ public class DepthFirstSearch {
             c = rand.nextInt(31);
         }
 
-        maze[1][1].setBeggining(true);
-        player.setPosx(1);
-        player.setPosy(1);
+        maze[1][1].setBeginning();
+        player.setPosX(1);
+        player.setPosY(1);
 
         recursion(r, c);
 
@@ -54,33 +54,33 @@ public class DepthFirstSearch {
             switch (randDir) {
                 case 1:
                     if (r - 2 <= 0) continue;
-                    if (maze[r - 2][c].iswall) {
-                        maze[r - 2][c].setIswall(false);
-                        maze[r - 1][c].setIswall(false);
+                    if (maze[r - 2][c].isWall()) {
+                        maze[r - 2][c].setWall(false);
+                        maze[r - 1][c].setWall(false);
                         recursion(r - 2, c);
                     }
                     break;
                 case 2:
                     if (c + 2 >= 31 - 1) continue;
-                    if (maze[r][c + 2].iswall) {
-                        maze[r][c + 2].setIswall(false);
-                        maze[r][c + 1].setIswall(false);
+                    if (maze[r][c + 2].isWall()) {
+                        maze[r][c + 2].setWall(false);
+                        maze[r][c + 1].setWall(false);
                         recursion(r, c + 2);
                     }
                     break;
                 case 3:
                     if (r + 2 >= 31 - 1) continue;
-                    if (maze[r + 2][c].iswall) {
-                        maze[r + 2][c].setIswall(false);
-                        maze[r + 1][c].setIswall(false);
+                    if (maze[r + 2][c].isWall()) {
+                        maze[r + 2][c].setWall(false);
+                        maze[r + 1][c].setWall(false);
                         recursion(r + 2, c);
                     }
                     break;
                 case 4:
                     if (c - 2 <= 0) continue;
-                    if (maze[r][c - 2].iswall) {
-                        maze[r][c - 2].setIswall(false);
-                        maze[r][c - 1].setIswall(false);
+                    if (maze[r][c - 2].isWall()) {
+                        maze[r][c - 2].setWall(false);
+                        maze[r][c - 1].setWall(false);
                         recursion(r, c - 2);
                     }
                     break;

@@ -4,20 +4,24 @@ public class Cell {
 
     public int x;
     public int y;
-    public boolean iswall;
-    public boolean isBeggining;
-    public boolean isFinish;
-    public boolean isReachable;
+    private boolean isWall;
+    private boolean isFinish;
+    private boolean isReachable;
+    private boolean isReachableGreen;
 
-    public boolean isReachablegreen() {
-        return isReachablegreen;
+    public boolean isFinish() {
+        return isFinish;
     }
 
-    public void setReachablegreen(boolean reachablegreen) {
-        isReachablegreen = reachablegreen;
+    public boolean isReachableGreen() {
+        return isReachableGreen;
     }
 
-    boolean isReachablegreen;
+    public void setReachableGreen(boolean reachableGreen) {
+        isReachableGreen = reachableGreen;
+    }
+
+
 
     public boolean isReachable() {
         return isReachable;
@@ -30,11 +34,10 @@ public class Cell {
     public Cell(int x, int y){
         this.x = x;
         this.y = y;
-        this.iswall = true;
-        this.isBeggining = false;
+        this.isWall = true;
         this.isFinish = false;
         this.isReachable = false;
-        this.isReachablegreen = false;
+        this.isReachableGreen = false;
     }
 
     public int getX() {
@@ -45,24 +48,15 @@ public class Cell {
         return y;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setBeginning() {
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setWall(boolean wall) {
+        this.isWall = wall;
     }
 
-    public void setBeggining(boolean beggining) {
-        isBeggining = beggining;
-    }
-
-    public void setIswall(boolean iswall) {
-        this.iswall = iswall;
-    }
-
-    public boolean isIswall() {
-        return iswall;
+    public boolean isWall() {
+        return isWall;
     }
 
     public void setFinish(boolean finish) {

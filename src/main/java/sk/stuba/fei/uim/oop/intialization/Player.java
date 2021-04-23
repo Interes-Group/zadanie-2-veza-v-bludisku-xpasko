@@ -2,23 +2,23 @@ package sk.stuba.fei.uim.oop.intialization;
 
 public class Player {
 
-    private int posx;
-    private int posy;
+    private int posX;
+    private int posY;
 
-    public void setPosy(int posy) {
-        this.posy = posy;
+    public void setPosY(int posY) {
+        this.posY = posY;
     }
 
-    public void setPosx(int posx) {
-        this.posx = posx;
+    public void setPosX(int posX) {
+        this.posX = posX;
     }
 
-    public int getPosy() {
-        return posy;
+    public int getPosY() {
+        return posY;
     }
 
-    public int getPosx() {
-        return posx;
+    public int getPosX() {
+        return posX;
     }
 
 }

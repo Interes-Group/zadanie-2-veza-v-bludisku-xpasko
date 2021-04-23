@@ -1,31 +1,20 @@
-package sk.stuba.fei.uim.oop.intialization;
+package sk.stuba.fei.uim.oop.inputs;
+
+import sk.stuba.fei.uim.oop.CreateMaze;
+import sk.stuba.fei.uim.oop.intialization.DepthFirstSearch;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class CreateButtons extends JPanel{
 
-    public JButton getB1() {
-        return b1;
+    public CreateButtons(CreateMaze maze, DepthFirstSearch DFS) {
+        this.maze = maze;
+        this.DFS = DFS;
     }
 
-    public JButton getB2() {
-        return b2;
-    }
-
-    public JButton getB3() {
-        return b3;
-    }
-
-    public JButton getB4() {
-        return b4;
-    }
-
-    public JButton getB5() {
-        return b5;
-    }
-
-
+    private final CreateMaze maze;
+    private final DepthFirstSearch DFS;
 
     JButton b1 = new JButton("RESET");
     JButton b2 = new JButton("↑");
@@ -35,10 +24,10 @@ public class CreateButtons extends JPanel{
     JLabel counter = new JLabel("Pocet uspesnych: 0");
     JPanel p2 = new JPanel();
 
+
     public JPanel getP2() {
         return p2;
     }
-
     public JLabel getCounter() {
         return counter;
     }
@@ -103,5 +92,13 @@ public class CreateButtons extends JPanel{
         p1.add(b5,c);
 
         return p1;
+    }
+
+    public void buttonAction(){
+        b1.addActionListener(e -> maze.reset(false));
+        b2.addActionListener(e -> maze.moveCondition(DFS.getMaze(),'u')); //UP
+        b3.addActionListener(e -> maze.moveCondition(DFS.getMaze(),'d'));//Down
+        b4.addActionListener(e -> maze.moveCondition(DFS.getMaze(),'r'));//Right
+        b5.addActionListener(e -> maze.moveCondition(DFS.getMaze(),'l'));//Left
     }
 }
